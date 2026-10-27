@@ -141,8 +141,6 @@ individual-household-electric-power-consumption/
 │   └── electricity_consumption_analysis.ipynb
 ├── data/
 │   └── README.md
-├── models/
-│   └── README.md
 └── requirements.txt
 ```
 
