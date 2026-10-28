@@ -114,9 +114,11 @@ The dataset was loaded and inspected to understand its structure, dimensions, da
 - [x] Analyze the skewness of `Sub_metering_1`.
 - [x] Analyze the skewness of `Sub_metering_2`.
 - [x] Analyze the skewness of `Sub_metering_3`.
+- [x] Calculate the correlation matrix of numerical features.
+- [x] Analyze correlations with `Global_active_power`.
 - [ ] Visualize electricity consumption over time.
 - [ ] Identify trends and daily or seasonal patterns.
-- [ ] Investigate relationships between numerical features.
+- [ ] Investigate additional relationships between numerical features.
 
 **Notes:**
 
@@ -137,6 +139,35 @@ The three sub-metering features were also positively skewed:
 - `Sub_metering_3`: skewness ≈ **0.72**
 
 `Sub_metering_1` and `Sub_metering_2` showed particularly strong positive skewness, with a large proportion of zero-valued observations.
+
+### Correlation Analysis
+
+A correlation matrix was calculated to examine the linear relationships between the numerical features.
+
+`Global_active_power` showed the following correlations with the other numerical features:
+
+| Feature | Correlation with `Global_active_power` |
+|---|---:|
+| `Global_intensity` | **1.00** |
+| `Sub_metering_3` | **0.64** |
+| `Sub_metering_1` | **0.48** |
+| `Sub_metering_2` | **0.44** |
+| `Global_reactive_power` | **0.25** |
+| `Voltage` | **-0.40** |
+
+The strongest positive linear relationship was observed between `Global_active_power` and `Global_intensity`, with a correlation of approximately **1.00**.
+
+`Sub_metering_3` showed a moderate positive correlation with `Global_active_power`, while `Sub_metering_1` and `Sub_metering_2` showed weaker positive correlations.
+
+`Global_reactive_power` showed a relatively weak positive correlation with `Global_active_power`, whereas `Voltage` showed a moderate negative correlation.
+
+These relationships will be considered during feature engineering and the development of the forecasting model.
+
+#### Correlation Matrix Visualization
+
+<!-- Add correlation matrix image here -->
+
+![Correlation Matrix](images/correlation_matrix.png)
 
 ---
 
@@ -262,6 +293,8 @@ Use this section to record important experiments, observations, and results.
 | 2026-10-28 | Stage 3 | Calculated sub-metering skewness | 5.94, 7.09, and 0.72 |
 | 2026-10-28 | Stage 4 | Selected median imputation for all sub-metering features | Completed |
 | 2026-10-28 | Stage 4 | Verified missing values after imputation | All numerical features: 0% missing |
+| 2026-10-28 | Stage 3 | Calculated correlation matrix of numerical features | Completed |
+| 2026-10-28 | Stage 3 | Analyzed correlations with `Global_active_power` | Strongest correlation: `Global_intensity` ≈ 1.00 |
 
 Add a new row whenever you complete an important experiment or make a meaningful change.
 
@@ -274,6 +307,8 @@ _Update this structure as new files and folders are added._
 ```text
 individual-household-electric-power-consumption/
 ├── README.md
+├── images/
+│   └── correlation_matrix.png
 ├── notebooks/
 │   └── electricity_consumption_analysis.ipynb
 ├── data/
@@ -286,6 +321,8 @@ individual-household-electric-power-consumption/
 ## 🚀 Future Improvements
 
 - Complete the remaining EDA steps.
+- Visualize electricity consumption over time.
+- Identify daily, weekly, and seasonal consumption patterns.
 - Convert date and time information into a proper datetime index.
 - Create time-based features for time series forecasting.
 - Experiment with different sequence lengths.
@@ -302,8 +339,8 @@ individual-household-electric-power-consumption/
 
 This project is actively being developed.
 
-The initial data inspection, descriptive analysis, value-frequency analysis, outlier detection, skewness analysis, and missing-value imputation have been completed.
+The initial data inspection, descriptive analysis, value-frequency analysis, outlier detection, skewness analysis, correlation analysis, and missing-value imputation have been completed.
 
 All numerical features currently contain **0% missing values** after applying appropriate imputation strategies based on their distributions.
 
-The next steps focus on completing the remaining exploratory data analysis, converting the dataset into a proper time series format, engineering temporal features, splitting the data chronologically, and preparing the data for deep learning forecasting.
+The next steps focus on completing the remaining exploratory data analysis, visualizing electricity consumption over time, converting the dataset into a proper time series format, engineering temporal features, splitting the data chronologically, and preparing the data for deep learning forecasting.
