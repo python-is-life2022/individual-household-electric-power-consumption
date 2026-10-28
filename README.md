@@ -108,6 +108,8 @@ The dataset was loaded and inspected to understand its structure, dimensions, da
 - [x] Analyze the distribution of `Voltage`.
 - [x] Investigate potential `Voltage` outliers using the IQR method.
 - [x] Analyze the skewness of `Voltage`.
+- [x] Analyze the distribution of `Global_intensity`.
+- [x] Analyze the skewness of `Global_intensity`.
 - [ ] Visualize electricity consumption over time.
 - [ ] Identify trends and daily or seasonal patterns.
 - [ ] Investigate relationships between numerical features.
@@ -120,7 +122,9 @@ For `Global_active_power`, a total of **94,907 potential statistical outliers** 
 
 For `Global_reactive_power`, the skewness was approximately **1.26**, also indicating a positively skewed distribution.
 
-For `Voltage`, a total of **51,067 potential statistical outliers** were identified using the 1.5 × IQR rule. These observations were retained because being an IQR-based statistical outlier does not necessarily mean that a measurement is invalid.
+For `Voltage`, a total of **51,067 potential statistical outliers** were identified using the 1.5 × IQR rule. These observations were retained because being an IQR-based statistical outlier does not necessarily mean that a measurement is invalid. The skewness of `Voltage` was approximately **-0.33**, indicating a relatively symmetric distribution.
+
+For `Global_intensity`, the skewness was approximately **1.85**, indicating a positively skewed distribution.
 
 ---
 
@@ -136,7 +140,9 @@ For `Voltage`, a total of **51,067 potential statistical outliers** were identif
 - [x] Analyze `Voltage` skewness before imputation.
 - [x] Use mean imputation for `Voltage`.
 - [x] Verify that missing values in `Voltage` were successfully handled.
-- [ ] Handle remaining missing values in `Global_intensity`.
+- [x] Analyze `Global_intensity` skewness before imputation.
+- [x] Use median imputation for `Global_intensity`.
+- [x] Verify that missing values in `Global_intensity` were successfully handled.
 - [ ] Handle remaining missing values in `Sub_metering_1`.
 - [ ] Handle remaining missing values in `Sub_metering_2`.
 - [ ] Handle remaining missing values in `Sub_metering_3`.
@@ -148,7 +154,7 @@ For `Voltage`, a total of **51,067 potential statistical outliers** were identif
 
 Missing values were handled based on the statistical distribution of each feature.
 
-`Global_active_power` and `Global_reactive_power` were positively skewed, so median imputation was selected for both features.
+`Global_active_power`, `Global_reactive_power`, and `Global_intensity` were positively skewed, so median imputation was selected for these features.
 
 `Voltage` had a skewness of approximately **-0.33**, indicating a relatively symmetric distribution. Therefore, mean imputation was selected.
 
@@ -157,8 +163,9 @@ After imputation:
 - `Global_active_power`: **0% missing values**
 - `Global_reactive_power`: **0% missing values**
 - `Voltage`: **0% missing values**
+- `Global_intensity`: **0% missing values**
 
-The remaining numerical features currently contain approximately **1.25% missing values** and will be handled in the next preprocessing steps.
+The remaining `Sub_metering` features currently contain approximately **1.25% missing values** and will be handled in the next preprocessing steps.
 
 ---
 
@@ -229,6 +236,9 @@ Use this section to record important experiments, observations, and results.
 | 2026-10-28 | Stage 3 | Calculated skewness of `Voltage` | Skewness ≈ -0.33 |
 | 2026-10-28 | Stage 4 | Selected mean imputation for `Voltage` | Completed |
 | 2026-10-28 | Stage 4 | Imputed missing `Voltage` values | 0% missing values |
+| 2026-10-28 | Stage 3 | Analyzed `Global_intensity` distribution and skewness | Skewness ≈ 1.85 |
+| 2026-10-28 | Stage 4 | Selected median imputation for `Global_intensity` | Completed |
+| 2026-10-28 | Stage 4 | Imputed missing `Global_intensity` values | 0% missing values |
 
 Add a new row whenever you complete an important experiment or make a meaningful change.
 
@@ -270,6 +280,6 @@ This project is actively being developed.
 
 The initial data inspection, descriptive analysis, value-frequency analysis, outlier detection, skewness analysis, and missing-value imputation for several numerical features have been completed.
 
-Currently, `Global_active_power`, `Global_reactive_power`, and `Voltage` have been successfully processed for missing values.
+Currently, `Global_active_power`, `Global_reactive_power`, `Voltage`, and `Global_intensity` have been successfully processed for missing values.
 
-The next steps focus on handling the remaining missing values, completing the exploratory data analysis, converting the dataset into a proper time series format, engineering temporal features, and preparing the data for deep learning forecasting.
+The next steps focus on handling the remaining missing values in the `Sub_metering` features, completing the exploratory data analysis, converting the dataset into a proper time series format, engineering temporal features, and preparing the data for deep learning forecasting.
