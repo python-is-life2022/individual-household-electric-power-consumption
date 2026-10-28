@@ -110,6 +110,10 @@ The dataset was loaded and inspected to understand its structure, dimensions, da
 - [x] Analyze the skewness of `Voltage`.
 - [x] Analyze the distribution of `Global_intensity`.
 - [x] Analyze the skewness of `Global_intensity`.
+- [x] Analyze the distributions of the three sub-metering features.
+- [x] Analyze the skewness of `Sub_metering_1`.
+- [x] Analyze the skewness of `Sub_metering_2`.
+- [x] Analyze the skewness of `Sub_metering_3`.
 - [ ] Visualize electricity consumption over time.
 - [ ] Identify trends and daily or seasonal patterns.
 - [ ] Investigate relationships between numerical features.
@@ -125,6 +129,14 @@ For `Global_reactive_power`, the skewness was approximately **1.26**, also indic
 For `Voltage`, a total of **51,067 potential statistical outliers** were identified using the 1.5 × IQR rule. These observations were retained because being an IQR-based statistical outlier does not necessarily mean that a measurement is invalid. The skewness of `Voltage` was approximately **-0.33**, indicating a relatively symmetric distribution.
 
 For `Global_intensity`, the skewness was approximately **1.85**, indicating a positively skewed distribution.
+
+The three sub-metering features were also positively skewed:
+
+- `Sub_metering_1`: skewness ≈ **5.94**
+- `Sub_metering_2`: skewness ≈ **7.09**
+- `Sub_metering_3`: skewness ≈ **0.72**
+
+`Sub_metering_1` and `Sub_metering_2` showed particularly strong positive skewness, with a large proportion of zero-valued observations.
 
 ---
 
@@ -143,9 +155,11 @@ For `Global_intensity`, the skewness was approximately **1.85**, indicating a po
 - [x] Analyze `Global_intensity` skewness before imputation.
 - [x] Use median imputation for `Global_intensity`.
 - [x] Verify that missing values in `Global_intensity` were successfully handled.
-- [ ] Handle remaining missing values in `Sub_metering_1`.
-- [ ] Handle remaining missing values in `Sub_metering_2`.
-- [ ] Handle remaining missing values in `Sub_metering_3`.
+- [x] Analyze skewness of the three sub-metering features.
+- [x] Use median imputation for `Sub_metering_1`.
+- [x] Use median imputation for `Sub_metering_2`.
+- [x] Use median imputation for `Sub_metering_3`.
+- [x] Verify that all missing values were successfully handled.
 - [ ] Convert date and time columns into a datetime index.
 - [ ] Check data quality and consistency.
 - [ ] Prepare the data for time series modeling.
@@ -154,18 +168,23 @@ For `Global_intensity`, the skewness was approximately **1.85**, indicating a po
 
 Missing values were handled based on the statistical distribution of each feature.
 
-`Global_active_power`, `Global_reactive_power`, and `Global_intensity` were positively skewed, so median imputation was selected for these features.
+`Global_active_power`, `Global_reactive_power`, `Global_intensity`, and all three sub-metering features were positively skewed, so median imputation was selected for these features.
 
 `Voltage` had a skewness of approximately **-0.33**, indicating a relatively symmetric distribution. Therefore, mean imputation was selected.
 
-After imputation:
+After the imputation process, all numerical features contain **0% missing values**.
 
-- `Global_active_power`: **0% missing values**
-- `Global_reactive_power`: **0% missing values**
-- `Voltage`: **0% missing values**
-- `Global_intensity`: **0% missing values**
+| Feature | Imputation Method | Missing Values After Imputation |
+|---|---|---:|
+| `Global_active_power` | Median | 0% |
+| `Global_reactive_power` | Median | 0% |
+| `Voltage` | Mean | 0% |
+| `Global_intensity` | Median | 0% |
+| `Sub_metering_1` | Median | 0% |
+| `Sub_metering_2` | Median | 0% |
+| `Sub_metering_3` | Median | 0% |
 
-The remaining `Sub_metering` features currently contain approximately **1.25% missing values** and will be handled in the next preprocessing steps.
+The missing-value handling stage has now been completed.
 
 ---
 
@@ -239,6 +258,10 @@ Use this section to record important experiments, observations, and results.
 | 2026-10-28 | Stage 3 | Analyzed `Global_intensity` distribution and skewness | Skewness ≈ 1.85 |
 | 2026-10-28 | Stage 4 | Selected median imputation for `Global_intensity` | Completed |
 | 2026-10-28 | Stage 4 | Imputed missing `Global_intensity` values | 0% missing values |
+| 2026-10-28 | Stage 3 | Analyzed the three sub-metering features | All three features were positively skewed |
+| 2026-10-28 | Stage 3 | Calculated sub-metering skewness | 5.94, 7.09, and 0.72 |
+| 2026-10-28 | Stage 4 | Selected median imputation for all sub-metering features | Completed |
+| 2026-10-28 | Stage 4 | Verified missing values after imputation | All numerical features: 0% missing |
 
 Add a new row whenever you complete an important experiment or make a meaningful change.
 
@@ -263,6 +286,7 @@ individual-household-electric-power-consumption/
 ## 🚀 Future Improvements
 
 - Complete the remaining EDA steps.
+- Convert date and time information into a proper datetime index.
 - Create time-based features for time series forecasting.
 - Experiment with different sequence lengths.
 - Compare different neural network architectures.
@@ -278,8 +302,8 @@ individual-household-electric-power-consumption/
 
 This project is actively being developed.
 
-The initial data inspection, descriptive analysis, value-frequency analysis, outlier detection, skewness analysis, and missing-value imputation for several numerical features have been completed.
+The initial data inspection, descriptive analysis, value-frequency analysis, outlier detection, skewness analysis, and missing-value imputation have been completed.
 
-Currently, `Global_active_power`, `Global_reactive_power`, `Voltage`, and `Global_intensity` have been successfully processed for missing values.
+All numerical features currently contain **0% missing values** after applying appropriate imputation strategies based on their distributions.
 
-The next steps focus on handling the remaining missing values in the `Sub_metering` features, completing the exploratory data analysis, converting the dataset into a proper time series format, engineering temporal features, and preparing the data for deep learning forecasting.
+The next steps focus on completing the remaining exploratory data analysis, converting the dataset into a proper time series format, engineering temporal features, splitting the data chronologically, and preparing the data for deep learning forecasting.
