@@ -31,8 +31,8 @@ The project follows a step-by-step workflow, starting with data exploration and 
 - Python
 - Jupyter Notebook
 - Pandas — data loading, manipulation, and analysis.
-- NumPy — numerical computations.
 - Matplotlib — data visualization.
+- Scikit-learn — dataset splitting and model selection utilities.
 
 ### To Be Added
 
@@ -161,7 +161,7 @@ The strongest positive linear relationship was observed between `Global_active_p
 
 `Global_reactive_power` showed a relatively weak positive correlation with `Global_active_power`, whereas `Voltage` showed a moderate negative correlation.
 
-These relationships will be considered during feature engineering and the development of the forecasting model.
+These relationships will be considered during feature engineering and the development of the final machine learning task.
 
 #### Correlation Matrix Visualization
 
@@ -189,9 +189,9 @@ These relationships will be considered during feature engineering and the develo
 - [x] Use median imputation for `Sub_metering_2`.
 - [x] Use median imputation for `Sub_metering_3`.
 - [x] Verify that all missing values were successfully handled.
-- [ ] Convert date and time columns into a datetime index.
-- [ ] Check data quality and consistency.
-- [ ] Prepare the data for time series modeling.
+- [x] Convert date and time information into a datetime representation.
+- [x] Check data quality and consistency.
+- [x] Prepare the data for time series modeling.
 
 **Notes:**
 
@@ -227,9 +227,9 @@ The missing-value handling stage has now been completed.
 - [x] Extract `DayOfWeek` from the datetime information.
 - [x] Extract `Hour` from the datetime information.
 - [x] Extract `Minute` from the datetime information.
+- [x] Split the dataset chronologically into training, validation, and test sets.
 - [ ] Create additional time-based features.
 - [ ] Define input sequences and prediction targets.
-- [ ] Split data chronologically into training, validation, and test sets.
 - [ ] Normalize numerical features.
 - [ ] Prepare sequences for deep learning models.
 
@@ -248,7 +248,29 @@ Several temporal features were then extracted from the datetime information:
 
 `DayOfWeek` represents the day of the week using values from **0 (Monday) to 6 (Sunday)**.
 
-These features provide explicit temporal information that can be used during feature engineering and later modeling stages.
+### Chronological Train, Validation, and Test Split
+
+The `model_selection` module from Scikit-learn was imported to provide utilities for splitting the dataset into training, validation, and test sets.
+
+The `train_test_split` function was used to divide the dataset while preserving the chronological order of the observations by setting `shuffle=False`.
+
+Since the dataset contains time-series observations, the data was split chronologically rather than randomly.
+
+The `shuffle=False` parameter was used to preserve the original temporal order of the observations. This ensures that the model is trained on earlier observations and evaluated on later observations, which better represents a real-world forecasting scenario.
+
+The dataset was divided into three subsets:
+
+- **Training Set:** 72% of the data
+- **Validation Set:** 8% of the data
+- **Test Set:** 20% of the data
+
+The resulting dataset sizes are:
+
+- Training: **1,494,186 observations**
+- Validation: **166,021 observations**
+- Test: **415,052 observations**
+
+The training set contains the earliest observations, followed by the validation set and then the test set. This chronological structure helps prevent future information from being introduced into the training process.
 
 Additional temporal features, such as weekend indicators and cyclical representations of time, may be added depending on the final machine learning task.
 
@@ -316,6 +338,8 @@ Use this section to record important experiments, observations, and results.
 | 2026-10-28 | Stage 3 | Analyzed correlations with `Global_active_power` | Strongest correlation: `Global_intensity` ≈ 1.00 |
 | 2026-10-28 | Stage 5 | Combined `Date` and `Time` into a datetime column | Completed |
 | 2026-10-28 | Stage 5 | Extracted temporal features | `Year`, `Month`, `Day`, `DayOfWeek`, `Hour`, and `Minute` |
+| 2026-10-28 | Stage 5 | Imported Scikit-learn `model_selection` utilities | `train_test_split` added |
+| 2026-10-28 | Stage 5 | Split the dataset chronologically | Train: 72%, Validation: 8%, Test: 20% |
 
 Add a new row whenever you complete an important experiment or make a meaningful change.
 
@@ -349,6 +373,7 @@ individual-household-electric-power-consumption/
 - Explore cyclical representations of temporal features.
 - Define the final machine learning problem and target variable.
 - Experiment with different sequence lengths.
+- Normalize numerical features without introducing data leakage.
 - Compare different neural network architectures.
 - Experiment with LSTM, GRU, and other deep learning approaches.
 - Compare forecasting performance across models.
@@ -362,10 +387,12 @@ individual-household-electric-power-consumption/
 
 This project is actively being developed.
 
-The initial data inspection, descriptive analysis, value-frequency analysis, outlier detection, skewness analysis, correlation analysis, missing-value imputation, and initial temporal feature engineering have been completed.
+The initial data inspection, descriptive analysis, value-frequency analysis, outlier detection, skewness analysis, correlation analysis, missing-value imputation, temporal feature engineering, and chronological dataset splitting have been completed.
 
 All numerical features currently contain **0% missing values** after applying appropriate imputation strategies based on their distributions.
 
-The dataset has also been converted from separate date and time columns into a datetime representation, from which several temporal features have been extracted.
+The dataset has been converted from separate date and time columns into a datetime representation, from which several temporal features have been extracted.
 
-The next steps focus on completing the remaining exploratory data analysis, investigating temporal consumption patterns, creating additional time-based features, defining the final machine learning problem, and preparing the data for deep learning.
+The data has also been split chronologically into training, validation, and test sets using Scikit-learn's `train_test_split` with `shuffle=False` to preserve the temporal structure of the dataset.
+
+The next steps focus on completing the remaining exploratory data analysis, investigating temporal consumption patterns, creating additional time-based features, defining the final machine learning problem, and preparing the data for modeling.
