@@ -23,9 +23,9 @@
 
 This project explores household electricity consumption data and develops a deep learning pipeline for forecasting future energy usage.
 
-The workflow covers data inspection, exploratory data analysis, missing-value handling, temporal feature engineering, chronological splitting, feature scaling, and initial neural network development.
+The workflow covers data inspection, exploratory data analysis, missing-value handling, temporal feature engineering, chronological splitting, feature scaling, neural network development, and initial model training.
 
-> **Project status:** The initial neural network architecture has been defined and compiled. Training and forecasting evaluation are upcoming steps.
+The initial fully connected neural network has been trained for 10 epochs using validation data. Further evaluation and the development of a proper sequence-based forecasting setup remain in progress.
 
 ## 🎯 Objectives
 
@@ -36,6 +36,7 @@ The workflow covers data inspection, exploratory data analysis, missing-value ha
 - ⚙️ Engineer temporal features and prepare forecasting inputs.
 - 📏 Apply appropriate feature scaling without data leakage.
 - 🧠 Develop deep learning models using TensorFlow/Keras.
+- 📉 Monitor training and validation performance.
 - 📈 Evaluate and compare forecasting performance.
 
 ## 📂 Dataset
@@ -58,7 +59,7 @@ The dataset contains approximately four years of household electricity measureme
 | `Sub_metering_2` | Energy sub-metering for laundry appliances |
 | `Sub_metering_3` | Energy sub-metering for other appliances |
 
-The final forecasting target and prediction horizon will be determined during model development.
+The current model uses `Global_active_power` as its regression target. The forecasting horizon and sequence-based input structure still need to be established before the model can be considered a complete time-series forecasting solution.
 
 ## 🛠️ Tech Stack
 
@@ -69,7 +70,7 @@ The final forecasting target and prediction horizon will be determined during mo
 | Pandas & NumPy | Data manipulation and numerical computation |
 | Matplotlib & Seaborn | Visualization and statistical analysis |
 | Scikit-learn | Preprocessing and data splitting |
-| TensorFlow / Keras | Neural network development |
+| TensorFlow / Keras | Neural network development and training |
 
 ---
 
@@ -180,7 +181,7 @@ The dataset was split chronologically using Scikit-learn's `train_test_split` wi
 
 **Temporal order:** Past → Training → Validation → Test → Future
 
-Preserving temporal order helps prevent future observations from entering the training set. Additional care will be needed when generating sequences and selecting forecasting targets.
+Preserving temporal order helps prevent future observations from entering the training set. Additional care is required when generating sequences and aligning input observations with future targets.
 
 ### 06 · Feature Scaling
 
@@ -253,7 +254,53 @@ Dense (1 neuron, Linear)
 
 MSE is used as the optimization objective, while MAE measures the average absolute difference between predicted and actual values.
 
-The current architecture is an initial baseline, not a validated forecasting model. The input dimensions and output target must be aligned with the final forecasting setup before training.
+The architecture serves as an initial regression baseline. Its current six-feature input represents the other standardized numerical measurements, while the output represents `Global_active_power`.
+
+### 08 · Initial Model Training
+
+The compiled neural network was trained for **10 epochs** using a batch size of **32** and a separate validation dataset.
+
+#### Training Configuration
+
+| Parameter | Value |
+|---|---|
+| Epochs | `10` |
+| Batch size | `32` |
+| Input features | 6 numerical measurements |
+| Target | `Global_active_power` |
+| Optimizer | Adam |
+| Learning rate | `0.0001` |
+| Loss function | MSE |
+| Evaluation metric during training | MAE |
+
+#### Training Implementation
+
+```python
+his = model.fit(
+    x=train_norm[:, 1:],
+    y=train_norm[:, 0],
+    validation_data=(
+        val_norm[:, 1:],
+        val_norm[:, 0]
+    ),
+    epochs=10,
+    batch_size=32
+)
+```
+
+The first column of the standardized dataset, `Global_active_power`, is used as the target. The remaining six columns are supplied as input features.
+
+Validation data is passed separately through `validation_data`, allowing training and validation losses and MAE to be monitored across epochs.
+
+The training history is stored in `his`, which can be used to visualize the learning curves:
+
+```python
+his.history.keys()
+```
+
+The history can subsequently be used to plot training and validation loss and MAE to investigate convergence and potential overfitting.
+
+> **Important:** This initial training run establishes a regression baseline. Since the current inputs are measurements from the same observation rather than explicitly generated historical sequences, this step alone does not establish future-consumption forecasting performance.
 
 ---
 
@@ -272,27 +319,34 @@ The current architecture is an initial baseline, not a validated forecasting mod
 - [x] Numerical feature scaling using training data only
 - [x] Initial Functional API model definition
 - [x] Model compilation with Adam, MSE, and MAE
+- [x] Initial model training for 10 epochs
+- [x] Validation data supplied during training
 
 ### 🚧 In Progress
 
-- [ ] Time-series pattern analysis
-- [ ] Final definition of the forecasting target
-- [ ] Temporal feature optimization
-- [ ] Model input and target alignment
+- [ ] Analyze training and validation loss curves
+- [ ] Compare training and validation MAE
+- [ ] Assess model convergence and potential overfitting
+- [ ] Define the future forecasting target and prediction horizon
+- [ ] Align model inputs and targets with the forecasting objective
 
 ### 🔜 Planned
 
 - [ ] Visualize daily, weekly, and seasonal consumption patterns
 - [ ] Apply cyclical encoding where appropriate
-- [ ] Generate input-output sequences
-- [ ] Train the initial neural network
-- [ ] Monitor training and validation performance
-- [ ] Evaluate forecasting results on the test set
-- [ ] Compare alternative forecasting architectures
+- [ ] Generate historical input-output sequences
+- [ ] Experiment with forecasting-specific neural network architectures
+- [ ] Tune model hyperparameters
+- [ ] Evaluate performance on the held-out test set
+- [ ] Calculate MAE, MSE, and RMSE
+- [ ] Visualize actual versus predicted consumption over time
+- [ ] Compare forecasting approaches and document the results
 
 ## 📊 Evaluation Strategy
 
-After training, model performance will be assessed on the held-out test set using appropriate regression metrics, such as:
+The model's training and validation history will first be examined to understand learning behavior and identify potential overfitting.
+
+After the forecasting target and input sequences have been finalized, the selected model will be evaluated on the held-out test set using appropriate regression metrics:
 
 - **MAE** — Mean Absolute Error
 - **MSE** — Mean Squared Error
@@ -300,7 +354,7 @@ After training, model performance will be assessed on the held-out test set usin
 
 Actual and predicted consumption values will also be visualized to assess forecasting behavior over time.
 
-No forecasting performance results are reported yet because model training and evaluation have not been completed.
+No numerical evaluation results are reported yet. The initial model has been trained, but test-set evaluation and validation of the forecasting setup remain outstanding.
 
 ## 📁 Repository Structure
 
@@ -318,9 +372,11 @@ No forecasting performance results are reported yet because model training and e
 
 ## 📌 Project Status
 
-**Current stage:** Initial deep learning model development
+**Current stage:** Initial model training and performance analysis
 
-The project has progressed from data inspection and preprocessing to defining an initial neural network. The next milestone is to establish the forecasting target, prepare sequential inputs, and evaluate the model.
+The project has progressed from data inspection and preprocessing to building, compiling, and training an initial neural network with validation data.
+
+The next milestone is to analyze the learning curves, establish a proper sequence-based forecasting setup, and evaluate predictive performance on unseen observations.
 
 ## 📚 References
 
