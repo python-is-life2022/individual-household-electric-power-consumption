@@ -15,9 +15,12 @@ The project follows a step-by-step workflow, starting with data exploration and 
 - Analyze household electricity consumption data.
 - Perform Exploratory Data Analysis (EDA).
 - Identify missing values, outliers, and consumption patterns.
+- Analyze the statistical distribution of numerical features.
 - Visualize trends and relationships in the data.
-- Prepare time series data for forecasting.
+- Prepare the dataset for time series forecasting.
+- Engineer meaningful temporal features.
 - Develop and evaluate deep learning models using TensorFlow/Keras.
+- Compare different forecasting approaches and model architectures.
 
 ---
 
@@ -28,13 +31,13 @@ The project follows a step-by-step workflow, starting with data exploration and 
 - Python
 - Jupyter Notebook
 - Pandas — data loading, manipulation, and analysis.
+- NumPy — numerical computations.
 - Matplotlib — data visualization.
 
 ### To Be Added
 
-- NumPy — numerical computations.
 - Seaborn — statistical visualization.
-- TensorFlow/Keras — deep learning and forecasting.
+- TensorFlow/Keras — deep learning and time series forecasting.
 
 ---
 
@@ -45,6 +48,16 @@ The project follows a step-by-step workflow, starting with data exploration and 
 **Source:** [UCI Machine Learning Repository](https://archive.ics.uci.edu/dataset/235/individual+household+electric+power+consumption)
 
 The dataset contains measurements of household electric power consumption recorded at one-minute intervals over approximately four years.
+
+The dataset includes measurements such as:
+
+- `Global_active_power`
+- `Global_reactive_power`
+- `Voltage`
+- `Global_intensity`
+- `Sub_metering_1`
+- `Sub_metering_2`
+- `Sub_metering_3`
 
 **Target Variable:** `Global_active_power` (kilowatts)
 
@@ -78,7 +91,7 @@ Initial project setup and preparation of the data analysis environment.
 
 **Notes:**
 
-The dataset was loaded and inspected to understand its structure, dimensions, data types, descriptive statistics, and missing-value distribution.
+The dataset was loaded and inspected to understand its structure, dimensions, data types, descriptive statistics, value distributions, and missing-value distribution.
 
 ---
 
@@ -90,17 +103,24 @@ The dataset was loaded and inspected to understand its structure, dimensions, da
 - [x] Identify potential outlier observations.
 - [x] Analyze skewness of `Global_active_power`.
 - [x] Analyze the frequency of unique `Global_active_power` values.
+- [x] Analyze the distribution of `Global_reactive_power`.
+- [x] Analyze the skewness of `Global_reactive_power`.
+- [x] Analyze the distribution of `Voltage`.
+- [x] Investigate potential `Voltage` outliers using the IQR method.
+- [x] Analyze the skewness of `Voltage`.
 - [ ] Visualize electricity consumption over time.
 - [ ] Identify trends and daily or seasonal patterns.
 - [ ] Investigate relationships between numerical features.
 
 **Notes:**
 
-The `Global_active_power` feature was analyzed using descriptive statistics, value-frequency analysis, and the IQR method.
+The numerical features were analyzed using descriptive statistics, value-frequency analysis, skewness analysis, and the IQR method.
 
-A total of **94,907 potential outliers** were identified using the 1.5 × IQR rule.
+For `Global_active_power`, a total of **94,907 potential statistical outliers** were identified using the 1.5 × IQR rule. The feature has a skewness of approximately **1.79**, indicating a positively skewed distribution.
 
-The skewness of `Global_active_power` was approximately **1.79**, indicating a positively skewed distribution. Because of the skewed distribution and the presence of potential extreme values, the median was selected as the preferred method for missing-value imputation.
+For `Global_reactive_power`, the skewness was approximately **1.26**, also indicating a positively skewed distribution.
+
+For `Voltage`, a total of **51,067 potential statistical outliers** were identified using the 1.5 × IQR rule. These observations were retained because being an IQR-based statistical outlier does not necessarily mean that a measurement is invalid.
 
 ---
 
@@ -110,20 +130,41 @@ The skewness of `Global_active_power` was approximately **1.79**, indicating a p
 - [x] Select an appropriate imputation method based on data distribution.
 - [x] Use median imputation for the skewed `Global_active_power` feature.
 - [x] Verify that missing values were successfully handled.
+- [x] Analyze `Global_reactive_power` skewness before imputation.
+- [x] Use median imputation for `Global_reactive_power`.
+- [x] Verify that missing values in `Global_reactive_power` were successfully handled.
+- [x] Analyze `Voltage` skewness before imputation.
+- [x] Use mean imputation for `Voltage`.
+- [x] Verify that missing values in `Voltage` were successfully handled.
+- [ ] Handle remaining missing values in `Global_intensity`.
+- [ ] Handle remaining missing values in `Sub_metering_1`.
+- [ ] Handle remaining missing values in `Sub_metering_2`.
+- [ ] Handle remaining missing values in `Sub_metering_3`.
 - [ ] Convert date and time columns into a datetime index.
 - [ ] Check data quality and consistency.
 - [ ] Prepare the data for time series modeling.
 
 **Notes:**
 
-Missing values in `Global_active_power` were replaced using the median because the feature has a positively skewed distribution.
+Missing values were handled based on the statistical distribution of each feature.
 
-After imputation, the missing-value percentage for `Global_active_power` was reduced to **0%**.
+`Global_active_power` and `Global_reactive_power` were positively skewed, so median imputation was selected for both features.
+
+`Voltage` had a skewness of approximately **-0.33**, indicating a relatively symmetric distribution. Therefore, mean imputation was selected.
+
+After imputation:
+
+- `Global_active_power`: **0% missing values**
+- `Global_reactive_power`: **0% missing values**
+- `Voltage`: **0% missing values**
+
+The remaining numerical features currently contain approximately **1.25% missing values** and will be handled in the next preprocessing steps.
 
 ---
 
 ### Stage 5 — Feature Engineering
 
+- [ ] Convert date and time information into a datetime index.
 - [ ] Create time-based features.
 - [ ] Extract useful information from date and time.
 - [ ] Define input sequences and prediction targets.
@@ -140,7 +181,9 @@ _To be completed._
 ### Stage 6 — Deep Learning Model
 
 - [ ] Build a neural network using TensorFlow/Keras.
+- [ ] Use the Functional API for model development.
 - [ ] Select an appropriate architecture for time series forecasting.
+- [ ] Experiment with different sequence lengths.
 - [ ] Train the model.
 - [ ] Monitor training and validation performance.
 - [ ] Tune model architecture and hyperparameters.
@@ -156,6 +199,7 @@ _To be completed._
 - [ ] Generate predictions on unseen data.
 - [ ] Evaluate performance using suitable regression metrics.
 - [ ] Visualize actual versus predicted consumption.
+- [ ] Analyze forecasting errors.
 - [ ] Analyze model limitations.
 - [ ] Compare different forecasting approaches.
 - [ ] Identify possible improvements.
@@ -174,11 +218,17 @@ Use this section to record important experiments, observations, and results.
 |---|---|---|---|
 | 2026-10-28 | Stage 2 | Inspected dataset structure and calculated descriptive statistics | Completed |
 | 2026-10-28 | Stage 2 | Analyzed `Global_active_power` value frequencies | Completed |
-| 2026-10-28 | Stage 3 | Applied the IQR method to detect potential outliers | 94,907 potential outliers identified |
+| 2026-10-28 | Stage 3 | Applied the IQR method to `Global_active_power` | 94,907 potential outliers identified |
 | 2026-10-28 | Stage 3 | Calculated skewness of `Global_active_power` | Skewness ≈ 1.79 |
-| 2026-10-28 | Stage 4 | Selected median based on the skewed distribution | Completed |
-| 2026-10-28 | Stage 4 | Imputed missing `Global_active_power` values using the median | Completed |
-| 2026-10-28 | Stage 4 | Verified missing values after imputation | `Global_active_power`: 0% missing |
+| 2026-10-28 | Stage 4 | Selected median imputation for `Global_active_power` | Completed |
+| 2026-10-28 | Stage 4 | Imputed missing `Global_active_power` values | 0% missing values |
+| 2026-10-28 | Stage 3 | Analyzed `Global_reactive_power` distribution and skewness | Skewness ≈ 1.26 |
+| 2026-10-28 | Stage 4 | Selected median imputation for `Global_reactive_power` | Completed |
+| 2026-10-28 | Stage 4 | Imputed missing `Global_reactive_power` values | 0% missing values |
+| 2026-10-28 | Stage 3 | Applied the IQR method to `Voltage` | 51,067 potential outliers identified |
+| 2026-10-28 | Stage 3 | Calculated skewness of `Voltage` | Skewness ≈ -0.33 |
+| 2026-10-28 | Stage 4 | Selected mean imputation for `Voltage` | Completed |
+| 2026-10-28 | Stage 4 | Imputed missing `Voltage` values | 0% missing values |
 
 Add a new row whenever you complete an important experiment or make a meaningful change.
 
@@ -218,6 +268,8 @@ individual-household-electric-power-consumption/
 
 This project is actively being developed.
 
-The initial data inspection, descriptive analysis, outlier detection, skewness analysis, and missing-value imputation have been completed.
+The initial data inspection, descriptive analysis, value-frequency analysis, outlier detection, skewness analysis, and missing-value imputation for several numerical features have been completed.
 
-The next steps focus on completing the exploratory data analysis, preparing the dataset as a time series, engineering temporal features, and developing a deep learning forecasting model.
+Currently, `Global_active_power`, `Global_reactive_power`, and `Voltage` have been successfully processed for missing values.
+
+The next steps focus on handling the remaining missing values, completing the exploratory data analysis, converting the dataset into a proper time series format, engineering temporal features, and preparing the data for deep learning forecasting.
