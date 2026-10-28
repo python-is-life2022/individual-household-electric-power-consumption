@@ -1,120 +1,136 @@
-# Individual Household Electric Power Consumption
+# ⚡ Household Energy Forecasting
 
-## Project Overview
+<p align="center">
+  <strong>Exploratory Data Analysis · Time-Series Forecasting · Deep Learning</strong>
+</p>
 
-This project focuses on analyzing household electricity consumption data and developing a deep learning model for forecasting future energy usage.
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white" alt="Pandas">
+  <img src="https://img.shields.io/badge/Scikit--learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white" alt="Scikit-learn">
+  <img src="https://img.shields.io/badge/TensorFlow-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white" alt="TensorFlow">
+  <img src="https://img.shields.io/badge/Keras-D00000?style=for-the-badge&logo=keras&logoColor=white" alt="Keras">
+</p>
 
-The project is currently in progress and is being developed step by step, from exploratory data analysis and preprocessing to time-series modeling and deep learning.
+<p align="center">
+  <img src="https://img.shields.io/badge/Status-In%20Progress-yellow?style=flat-square" alt="Project Status">
+  <img src="https://img.shields.io/badge/Task-Time%20Series%20Forecasting-2563EB?style=flat-square" alt="Task">
+</p>
 
-## Objectives
+---
 
-- Perform exploratory data analysis (EDA)
-- Identify missing values and potential outliers
-- Analyze feature distributions and relationships
-- Visualize electricity consumption over time
-- Identify temporal patterns and trends
-- Prepare the dataset for time-series forecasting
-- Perform temporal feature engineering
-- Apply appropriate feature scaling and preprocessing techniques
-- Build deep learning models using TensorFlow/Keras
-- Evaluate and compare forecasting approaches
+## 📌 Overview
 
-## Dataset
+This project explores household electricity consumption data and develops a deep learning pipeline for forecasting future energy usage.
 
-The dataset used in this project is the **Individual Household Electric Power Consumption** dataset from the UCI Machine Learning Repository.
+The workflow covers data inspection, exploratory data analysis, missing-value handling, temporal feature engineering, chronological splitting, feature scaling, and initial neural network development.
 
-The dataset contains nearly four years of one-minute measurements of household electricity consumption.
+> **Project status:** The initial neural network architecture has been defined and compiled. Training and forecasting evaluation are upcoming steps.
 
-It includes the following features:
+## 🎯 Objectives
 
-- `Date`
-- `Time`
-- `Global_active_power`
-- `Global_reactive_power`
-- `Voltage`
-- `Global_intensity`
-- `Sub_metering_1`
-- `Sub_metering_2`
-- `Sub_metering_3`
+- 🔎 Perform exploratory data analysis (EDA).
+- 🧹 Identify and handle missing values.
+- 📊 Investigate feature distributions, skewness, outliers, and correlations.
+- 🕒 Analyze temporal patterns and consumption trends.
+- ⚙️ Engineer temporal features and prepare forecasting inputs.
+- 📏 Apply appropriate feature scaling without data leakage.
+- 🧠 Develop deep learning models using TensorFlow/Keras.
+- 📈 Evaluate and compare forecasting performance.
 
-The UCI dataset does not define a specific target variable. The final target and forecasting task will be defined based on the final machine learning problem.
+## 📂 Dataset
 
-## Libraries and Tools
+**Individual Household Electric Power Consumption**
 
-- **Python** — Programming language
-- **Jupyter Notebook** — Development and analysis environment
-- **Pandas** — Data loading, manipulation, and analysis
-- **Matplotlib** — Data visualization
-- **Scikit-learn** — Data splitting, preprocessing, and model selection utilities
-- **Seaborn** — Statistical visualization
-- **TensorFlow / Keras** — Deep learning and time-series modeling
+Source: [UCI Machine Learning Repository](https://archive.ics.uci.edu/dataset/235/individual+household+electric+power+consumption)
 
-## Project Workflow
+The dataset contains approximately four years of household electricity measurements recorded at one-minute intervals.
 
-### Stage 1 — Data Loading
+| Feature | Description |
+|---|---|
+| `Date` | Measurement date |
+| `Time` | Measurement time |
+| `Global_active_power` | Total active power consumption |
+| `Global_reactive_power` | Total reactive power |
+| `Voltage` | Average voltage |
+| `Global_intensity` | Average current intensity |
+| `Sub_metering_1` | Energy sub-metering for kitchen appliances |
+| `Sub_metering_2` | Energy sub-metering for laundry appliances |
+| `Sub_metering_3` | Energy sub-metering for other appliances |
 
-The UCI Individual Household Electric Power Consumption dataset was loaded into a Pandas DataFrame.
+The final forecasting target and prediction horizon will be determined during model development.
 
-### Stage 2 — Initial Data Inspection
+## 🛠️ Tech Stack
 
-The dataset was inspected to understand its structure and data quality.
+| Tool | Purpose |
+|---|---|
+| Python | Core programming language |
+| Jupyter Notebook | Interactive development |
+| Pandas & NumPy | Data manipulation and numerical computation |
+| Matplotlib & Seaborn | Visualization and statistical analysis |
+| Scikit-learn | Preprocessing and data splitting |
+| TensorFlow / Keras | Neural network development |
 
-The following steps were performed:
+---
 
-- Checked dataset dimensions
-- Inspected column names
-- Checked data types
-- Calculated descriptive statistics
-- Identified missing values
-- Examined unique values and value frequencies
+## 🔬 Project Workflow
 
-### Stage 3 — Exploratory Data Analysis
+### 01 · Data Loading & Inspection
 
-Exploratory data analysis was performed to better understand the distributions and relationships between the numerical features.
+- Loaded the dataset into a Pandas DataFrame.
+- Examined dataset dimensions, column names, and data types.
+- Calculated descriptive statistics.
+- Inspected missing values, unique values, and value frequencies.
 
-The following analyses were performed:
+### 02 · Exploratory Data Analysis
 
-- Feature distributions
-- Skewness analysis
-- Potential outlier detection using the IQR method
-- Correlation analysis
-- Correlation matrix visualization
+Performed distribution analysis, skewness analysis, potential outlier detection using the Interquartile Range (IQR) method, and correlation analysis.
 
-Potential outliers detected using the IQR method:
+#### Potential Outliers
 
-- `Global_active_power`: 94,907
-- `Voltage`: 51,067
+| Feature | Number of Potential Outliers |
+|---|---:|
+| `Global_active_power` | 94,907 |
+| `Voltage` | 51,067 |
 
-Feature skewness:
+These observations were flagged by the IQR method and were not automatically removed.
 
-- `Global_active_power`: ~1.79
-- `Global_reactive_power`: ~1.26
-- `Voltage`: ~-0.33
-- `Global_intensity`: ~1.85
-- `Sub_metering_1`: ~5.94
-- `Sub_metering_2`: ~7.09
-- `Sub_metering_3`: ~0.72
+#### Feature Skewness
 
-Correlation with `Global_active_power`:
+| Feature | Skewness |
+|---|---:|
+| `Global_active_power` | ~1.79 |
+| `Global_reactive_power` | ~1.26 |
+| `Voltage` | ~-0.33 |
+| `Global_intensity` | ~1.85 |
+| `Sub_metering_1` | ~5.94 |
+| `Sub_metering_2` | ~7.09 |
+| `Sub_metering_3` | ~0.72 |
 
-- `Global_intensity`: ~1.00
-- `Sub_metering_3`: ~0.64
-- `Sub_metering_1`: ~0.48
-- `Sub_metering_2`: ~0.44
-- `Global_reactive_power`: ~0.25
-- `Voltage`: ~-0.40
+#### Correlation with Global Active Power
 
-The correlation matrix was saved as:
+| Feature | Correlation |
+|---|---:|
+| `Global_intensity` | ~1.00 |
+| `Sub_metering_3` | ~0.64 |
+| `Sub_metering_1` | ~0.48 |
+| `Sub_metering_2` | ~0.44 |
+| `Global_reactive_power` | ~0.25 |
+| `Voltage` | ~-0.40 |
+
+The correlation matrix was saved to:
 
 `images/correlation_matrix.png`
 
-Additional EDA will focus on visualizing consumption over time and identifying temporal patterns.
+<p align="center">
+  <img src="images/correlation_matrix.png" alt="Correlation matrix of household electricity consumption features" width="800">
+</p>
 
-### Stage 4 — Missing Value Handling
+### 03 · Missing Value Handling
 
-Missing values in the numerical features were handled using statistical imputation.
+Missing values in numerical features were handled using statistical imputation.
 
-Because several electricity consumption features showed positive skewness, median imputation was used for:
+**Median imputation** was applied to skewed consumption-related features:
 
 - `Global_active_power`
 - `Global_reactive_power`
@@ -123,17 +139,22 @@ Because several electricity consumption features showed positive skewness, media
 - `Sub_metering_2`
 - `Sub_metering_3`
 
-Mean imputation was used for `Voltage` because its distribution was approximately symmetric with only slight negative skewness.
+**Mean imputation** was applied to `Voltage`, whose observed distribution had relatively low skewness.
 
-After imputation, all numerical features contained 0% missing values.
+After imputation, all numerical features contained **0% missing values**.
 
-### Stage 5 — Temporal Feature Engineering and Chronological Split
+### 04 · Temporal Feature Engineering
 
-The `Date` and `Time` columns were combined into a single `datetime` column using the format:
+The `Date` and `Time` columns were combined into a single `datetime` column using:
 
-`%d/%m/%Y %H:%M:%S`
+```python
+df["datetime"] = pd.to_datetime(
+    df["Date"] + " " + df["Time"],
+    format="%d/%m/%Y %H:%M:%S"
+)
+```
 
-Several temporal features were extracted:
+The following temporal features were extracted:
 
 - `Year`
 - `Month`
@@ -142,47 +163,38 @@ Several temporal features were extracted:
 - `Hour`
 - `Minute`
 
-`DayOfWeek` represents the day of the week using values from 0 (Monday) to 6 (Sunday).
+`DayOfWeek` uses values from `0` (Monday) to `6` (Sunday).
 
-The original `datetime` column was kept for further temporal analysis and feature engineering.
+The original `datetime` column was retained for temporal analysis and future sequence generation.
 
-The `model_selection` module from Scikit-learn was used to split the dataset chronologically.
+### 05 · Chronological Data Splitting
 
-`train_test_split` was used with `shuffle=False` to preserve the temporal order of the observations.
+The dataset was split chronologically using Scikit-learn's `train_test_split` with `shuffle=False`.
 
-The dataset was divided into:
+| Dataset | Proportion | Observations |
+|---|---:|---:|
+| Training | 72% | 1,494,186 |
+| Validation | 8% | 166,021 |
+| Test | 20% | 415,052 |
+| **Total** | **100%** | **2,075,259** |
 
-- **Training Set:** 72%
-- **Validation Set:** 8%
-- **Test Set:** 20%
+**Temporal order:** Past → Training → Validation → Test → Future
 
-Resulting dataset sizes:
+Preserving temporal order helps prevent future observations from entering the training set. Additional care will be needed when generating sequences and selecting forecasting targets.
 
-- Training: **1,494,186 observations**
-- Validation: **166,021 observations**
-- Test: **415,052 observations**
+### 06 · Feature Scaling
 
-The resulting structure is:
+Numerical electricity measurements were standardized using Scikit-learn's `StandardScaler`.
 
-**Past → Training → Validation → Test → Future**
+To prevent data leakage, the scaler was fitted only on the training set.
 
-This chronological split helps prevent future information from being introduced into the training process.
+| Dataset | Operation |
+|---|---|
+| Training | `fit_transform()` |
+| Validation | `transform()` |
+| Test | `transform()` |
 
-### Stage 6 — Feature Scaling
-
-The numerical electricity measurements were standardized using `StandardScaler` from Scikit-learn.
-
-The scaler was fitted only on the training set. The same fitted scaler was then used to transform the validation and test sets.
-
-This prevents data leakage because the mean and standard deviation used for scaling are calculated only from the training data.
-
-The preprocessing workflow is:
-
-- **Training Set:** `fit_transform()`
-- **Validation Set:** `transform()`
-- **Test Set:** `transform()`
-
-The standardized numerical features include:
+The standardized features include:
 
 - `Global_active_power`
 - `Global_reactive_power`
@@ -192,61 +204,133 @@ The standardized numerical features include:
 - `Sub_metering_2`
 - `Sub_metering_3`
 
-Temporal features will be handled separately. Features such as `Hour`, `DayOfWeek`, and `Month` can later be represented using cyclical encoding to preserve their periodic nature.
+Temporal features will be handled separately. Cyclical encoding may be applied to periodic features such as `Hour`, `DayOfWeek`, and `Month`.
 
-## Experiment Log
+### 07 · Initial Neural Network
 
-### Completed
+An initial fully connected neural network was defined using the **Keras Functional API**.
 
-- Loaded the UCI electricity consumption dataset
-- Inspected dataset structure and data types
-- Analyzed missing values
-- Calculated descriptive statistics
-- Performed distribution and skewness analysis
-- Identified potential outliers using the IQR method
-- Performed correlation analysis
-- Created a correlation matrix visualization
-- Handled missing values using statistical imputation
-- Combined `Date` and `Time` into a `datetime` column
-- Extracted temporal features
-- Created chronological training, validation, and test sets
-- Applied `StandardScaler` to numerical features using training data only
+#### Architecture
 
-### Next Steps
+```text
+Input (6 features)
+       │
+       ▼
+Dense (20 neurons, ReLU)
+       │
+       ▼
+Dropout (10%)
+       │
+       ▼
+Dense (15 neurons, ReLU)
+       │
+       ▼
+Dropout (15%)
+       │
+       ▼
+Dense (1 neuron, Linear)
+```
 
-- Complete time-series EDA
-- Visualize daily, monthly, and seasonal consumption patterns
-- Create additional temporal features
-- Apply cyclical encoding to appropriate time features
-- Define the final forecasting target
-- Determine an appropriate sequence length
-- Prepare input-output sequences
-- Apply additional preprocessing if necessary
-- Build deep learning forecasting models using TensorFlow/Keras
-- Evaluate model performance on the test set
+#### Layer Configuration
 
-## Project Status
+| Layer | Configuration | Purpose |
+|---|---|---|
+| Input | 6 features | Accept numerical inputs |
+| Dense | 20 neurons, ReLU | Learn nonlinear patterns |
+| Dropout | 0.10 | Regularization |
+| Dense | 15 neurons, ReLU | Learn additional representations |
+| Dropout | 0.15 | Regularization |
+| Output | 1 neuron | Produce a continuous prediction |
 
-**Current Stage:** Data preprocessing and feature engineering
+#### Compilation Configuration
 
-### Completed
+| Parameter | Value |
+|---|---|
+| Optimizer | Adam |
+| Learning rate | `0.0001` |
+| Loss function | Mean Squared Error (MSE) |
+| Metric | Mean Absolute Error (MAE) |
 
-- Data loading and inspection
-- Exploratory data analysis
-- Missing value handling
-- Temporal feature engineering
-- Chronological dataset splitting
-- Numerical feature scaling
+MSE is used as the optimization objective, while MAE measures the average absolute difference between predicted and actual values.
 
-### In Progress
+The current architecture is an initial baseline, not a validated forecasting model. The input dimensions and output target must be aligned with the final forecasting setup before training.
 
-- Time-series pattern analysis
-- Temporal feature optimization
-- Final definition of the forecasting problem
+---
 
-### Planned
+## 📓 Experiment Log
 
-- Sequence generation
-- Deep learning model development
-- Model training and validation
-- Final evaluation and comparison
+### ✅ Completed
+
+- [x] Dataset loading and initial inspection
+- [x] Missing-value analysis
+- [x] Descriptive statistics and feature distributions
+- [x] Skewness and potential outlier analysis
+- [x] Correlation analysis and visualization
+- [x] Statistical missing-value imputation
+- [x] Datetime creation and temporal feature extraction
+- [x] Chronological training, validation, and test split
+- [x] Numerical feature scaling using training data only
+- [x] Initial Functional API model definition
+- [x] Model compilation with Adam, MSE, and MAE
+
+### 🚧 In Progress
+
+- [ ] Time-series pattern analysis
+- [ ] Final definition of the forecasting target
+- [ ] Temporal feature optimization
+- [ ] Model input and target alignment
+
+### 🔜 Planned
+
+- [ ] Visualize daily, weekly, and seasonal consumption patterns
+- [ ] Apply cyclical encoding where appropriate
+- [ ] Generate input-output sequences
+- [ ] Train the initial neural network
+- [ ] Monitor training and validation performance
+- [ ] Evaluate forecasting results on the test set
+- [ ] Compare alternative forecasting architectures
+
+## 📊 Evaluation Strategy
+
+After training, model performance will be assessed on the held-out test set using appropriate regression metrics, such as:
+
+- **MAE** — Mean Absolute Error
+- **MSE** — Mean Squared Error
+- **RMSE** — Root Mean Squared Error
+
+Actual and predicted consumption values will also be visualized to assess forecasting behavior over time.
+
+No forecasting performance results are reported yet because model training and evaluation have not been completed.
+
+## 📁 Repository Structure
+
+```text
+.
+├── images/
+│   └── correlation_matrix.png
+├── notebooks/
+│   └── electricity_consumption.ipynb
+├── README.md
+└── requirements.txt
+```
+
+*The repository structure above is illustrative; update the notebook path to match the actual project files.*
+
+## 📌 Project Status
+
+**Current stage:** Initial deep learning model development
+
+The project has progressed from data inspection and preprocessing to defining an initial neural network. The next milestone is to establish the forecasting target, prepare sequential inputs, and evaluate the model.
+
+## 📚 References
+
+- [UCI Machine Learning Repository — Individual Household Electric Power Consumption](https://archive.ics.uci.edu/dataset/235/individual+household+electric+power+consumption)
+- [TensorFlow Documentation](https://www.tensorflow.org/)
+- [Keras Documentation](https://keras.io/)
+- [Scikit-learn Documentation](https://scikit-learn.org/)
+
+---
+
+<p align="center">
+  <sub>Developed as a hands-on machine learning and deep learning project.</sub>
+</p>
