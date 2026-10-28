@@ -59,7 +59,7 @@ The dataset includes measurements such as:
 - `Sub_metering_2`
 - `Sub_metering_3`
 
-**Target Variable:** `Global_active_power` (kilowatts)
+The UCI dataset does not define a specific target variable. A target will be defined later depending on the final machine learning task selected for the project.
 
 ---
 
@@ -165,8 +165,6 @@ These relationships will be considered during feature engineering and the develo
 
 #### Correlation Matrix Visualization
 
-<!-- Add correlation matrix image here -->
-
 ![Correlation Matrix](images/correlation_matrix.png)
 
 ---
@@ -221,9 +219,15 @@ The missing-value handling stage has now been completed.
 
 ### Stage 5 — Feature Engineering
 
-- [ ] Convert date and time information into a datetime index.
-- [ ] Create time-based features.
-- [ ] Extract useful information from date and time.
+- [x] Combine `Date` and `Time` into a `datetime` column.
+- [x] Convert the combined date and time information into a datetime data type.
+- [x] Extract `Year` from the datetime information.
+- [x] Extract `Month` from the datetime information.
+- [x] Extract `Day` from the datetime information.
+- [x] Extract `DayOfWeek` from the datetime information.
+- [x] Extract `Hour` from the datetime information.
+- [x] Extract `Minute` from the datetime information.
+- [ ] Create additional time-based features.
 - [ ] Define input sequences and prediction targets.
 - [ ] Split data chronologically into training, validation, and test sets.
 - [ ] Normalize numerical features.
@@ -231,7 +235,22 @@ The missing-value handling stage has now been completed.
 
 **Notes:**
 
-_To be completed._
+The original `Date` and `Time` columns were stored as object data types. They were combined and converted into a single `datetime` column to provide a proper temporal representation of each observation.
+
+Several temporal features were then extracted from the datetime information:
+
+- `Year`
+- `Month`
+- `Day`
+- `DayOfWeek`
+- `Hour`
+- `Minute`
+
+`DayOfWeek` represents the day of the week using values from **0 (Monday) to 6 (Sunday)**.
+
+These features provide explicit temporal information that can be used during feature engineering and later modeling stages.
+
+Additional temporal features, such as weekend indicators and cyclical representations of time, may be added depending on the final machine learning task.
 
 ---
 
@@ -295,6 +314,8 @@ Use this section to record important experiments, observations, and results.
 | 2026-10-28 | Stage 4 | Verified missing values after imputation | All numerical features: 0% missing |
 | 2026-10-28 | Stage 3 | Calculated correlation matrix of numerical features | Completed |
 | 2026-10-28 | Stage 3 | Analyzed correlations with `Global_active_power` | Strongest correlation: `Global_intensity` ≈ 1.00 |
+| 2026-10-28 | Stage 5 | Combined `Date` and `Time` into a datetime column | Completed |
+| 2026-10-28 | Stage 5 | Extracted temporal features | `Year`, `Month`, `Day`, `DayOfWeek`, `Hour`, and `Minute` |
 
 Add a new row whenever you complete an important experiment or make a meaningful change.
 
@@ -323,8 +344,10 @@ individual-household-electric-power-consumption/
 - Complete the remaining EDA steps.
 - Visualize electricity consumption over time.
 - Identify daily, weekly, and seasonal consumption patterns.
-- Convert date and time information into a proper datetime index.
-- Create time-based features for time series forecasting.
+- Create additional temporal features.
+- Explore weekend and weekday consumption patterns.
+- Explore cyclical representations of temporal features.
+- Define the final machine learning problem and target variable.
 - Experiment with different sequence lengths.
 - Compare different neural network architectures.
 - Experiment with LSTM, GRU, and other deep learning approaches.
@@ -339,8 +362,10 @@ individual-household-electric-power-consumption/
 
 This project is actively being developed.
 
-The initial data inspection, descriptive analysis, value-frequency analysis, outlier detection, skewness analysis, correlation analysis, and missing-value imputation have been completed.
+The initial data inspection, descriptive analysis, value-frequency analysis, outlier detection, skewness analysis, correlation analysis, missing-value imputation, and initial temporal feature engineering have been completed.
 
 All numerical features currently contain **0% missing values** after applying appropriate imputation strategies based on their distributions.
 
-The next steps focus on completing the remaining exploratory data analysis, visualizing electricity consumption over time, converting the dataset into a proper time series format, engineering temporal features, splitting the data chronologically, and preparing the data for deep learning forecasting.
+The dataset has also been converted from separate date and time columns into a datetime representation, from which several temporal features have been extracted.
+
+The next steps focus on completing the remaining exploratory data analysis, investigating temporal consumption patterns, creating additional time-based features, defining the final machine learning problem, and preparing the data for deep learning.
